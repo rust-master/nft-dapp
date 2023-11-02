@@ -56,27 +56,35 @@ function App() {
       formDataUpload.append("description", description);
       formDataUpload.append("image", image);
 
-      const response = await axios.post(
-        "http://localhost:3001/upload/web3storage",
-        formDataUpload,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      // const response = await axios.post(
+      //   "http://localhost:3001/upload/web3storage",
+      //   formDataUpload,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
 
-      console.log("Response from server:", response.data);
-      console.log("URL:", response.data.ipfsUrl.toString());
+      // console.log("Response from server:", response.data);
+      // console.log("URL:", response.data.ipfsUrl.toString());
 
-      const result = await contract.methods
-        .safeMint(response.data.ipfsUrl.toString())
-        .send({ from: account, gas: 2000000 });
+      const urlmeta =
+        "https://bafybeig3afmvrkajh7n73dlpzi7p5fnib4btkztjk4jh3ky4aprqzr6ey4.ipfs.w3s.link/metadata.json";
+
+
+
+      const result = await contract.methods.safeMint(urlmeta).send({
+        from: account,
+        gas: 2100000,
+        gasPrice: 8000000000,
+      });
+
       console.log("Minted NFT:", result);
 
       // You can display a success message or redirect the user after successful upload
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("Error:", error);
     }
   };
 
